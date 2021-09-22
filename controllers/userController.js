@@ -1,4 +1,6 @@
 const User=require('../models/auth');
+const Post=require('../models/post');
+
 const bcrypt=require('bcrypt');
 const user_register=(req,res)=>{
     const email=req.body.email;
@@ -65,4 +67,52 @@ const user_login=(req,res)=>{
         })
     })
 }
-module.exports={user_register,user_login}
+
+const user_update=(req,res)=>{
+    const id=req.params.id;
+    const username=req.body.username;
+    const password=req.body.password;
+    User.findById(id)
+    .then(user=>{
+          bcrypt.hash(password,10).then(hash=>{
+             user.username=username;
+             user.password=hash;
+              return user.save().then(data=>{
+                res.status(200).json({
+                    message:user
+                })
+             })
+        })
+        .catch(err=>{
+            res.status(500).json({
+                message:err
+            })
+        })
+    }).catch(err=>{
+        res.status(500).json({
+            message:err
+        })
+    })
+
+    
+}
+const user_delete=(req,res)=>{
+    const id=req.params.id;
+    User.findByIdAndRemove(id).then(data=>{
+        Post.deleteMany({username:id}).then(data=>{
+            res.status(200).json({
+                message:"User deleted Successfully"
+            })
+        }).catch(err=>{
+            res.status(500).json({
+                message:err
+            })
+        })
+    })
+    .catch(err=>{
+        res.status(500).json({
+            message:err
+        })
+    })
+}
+module.exports={user_register,user_login,user_update,user_delete}
