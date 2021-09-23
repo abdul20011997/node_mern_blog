@@ -1,6 +1,8 @@
 const express=require('express');
 const userRoutes=require('./routes/user');
 const postRoutes=require('./routes/post');
+const categoryRoutes=require('./routes/category');
+
 
 const app=express();
 const mongoose=require('mongoose');
@@ -14,3 +16,5 @@ app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 app.use(userRoutes)
 app.use('/post',postRoutes)
+app.use('/category',categoryRoutes)
+
