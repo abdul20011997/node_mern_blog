@@ -59,7 +59,7 @@ const Post_update=(req,res)=>{
 
 const Post_getsinglepost=(req,res)=>{
     const id=req.params.id;
-    Post.findById(id).then(data=>{
+    Post.findById(id).populate('username','username').then(data=>{
         res.status(200).json({
             message:data
         })
