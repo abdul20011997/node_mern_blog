@@ -3,8 +3,9 @@ const Post=require('../models/post');
 const Post_create=(req,res)=>{
     const title=req.body.title;
     const desc=req.body.desc;
-    const photo=req.body.photo;
+    const photo=req.file.filename;
     const username=req.body.username;
+    console.log(req.file.filename);
     const post=new Post({
         title:title,
         desc:desc,
